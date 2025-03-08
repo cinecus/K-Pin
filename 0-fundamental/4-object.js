@@ -11,7 +11,9 @@ const person = {
     city: 'New York'
 }
 
-console.log(person);
+// destructuring
+const { name: firstName, age, city } = person;
+console.log(firstName, age, city);
 
 // object methods
 console.log(person.name);

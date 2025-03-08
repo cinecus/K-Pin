@@ -64,5 +64,47 @@ console.log(numbersArray);
 //array forEach
 numbers.forEach(number => console.log(number));
 
+let products = [
+    { name: 'laptop', price: 1000 },
+    { name: 'mouse', price: 100 },
+    { name: 'keyboard', price: 200 },
+    { name: 'monitor', price: 300 },
+] //array of objects
+
+// destructuring
+const [firstProduct, secondProduct, ...restProducts] = products
+console.log(firstProduct, secondProduct, restProducts); // firstProduct: { name: 'laptop', price: 1000 }, secondProduct: { name: 'mouse', price: 100 }, restProducts: [ { name: 'keyboard', price: 200 }, { name: 'monitor', price: 300 } ]
+
+//array map
+const productNames = products.map(product => product.name);
+console.log(productNames);
+
+products = products.map(product => {
+    return {
+        ...product,
+        discount: product.price * 0.1
+    }
+})
+
+
+//array filter
+const expensiveProducts = products.filter(product => product.price > 100);
+console.log(expensiveProducts);
+
+//array reduce
+const totalPrice = products.reduce((acc, product) => acc + product.price, 0);
+console.log(totalPrice);
+
+//array find
+const foundProduct = products.find(product => product.name === 'mouse');
+console.log(foundProduct);
+
+//array findIndex
+const foundProductIndex = products.findIndex(product => product.name === 'mouse');
+console.log(foundProductIndex);
+
+//array sort
+const sortedProducts = products.sort((a, b) => a.price - b.price);
+console.log(sortedProducts);
 
 
