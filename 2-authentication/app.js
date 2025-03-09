@@ -2,6 +2,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const app = express();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const port = 3000;
 
 app.use(express.json());
@@ -26,11 +27,13 @@ app.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'User already exists' });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     query = `
         INSERT INTO users (username, password, first_name, last_name, phone)
         VALUES ($1, $2, $3, $4, $5);
     `;
-    await pool.query(query, [username, password, first_name, last_name, phone]);
+    await pool.query(query, [username, hashedPassword, first_name, last_name, phone]);
     res.status(201).json({ message: 'User registered successfully' });
 });
 
@@ -46,7 +49,8 @@ app.post('/login', async(req, res) => {
     }
 
     const user = users.rows[0];
-    if(user.password !== password){
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if(!isPasswordValid){
         return res.status(400).json({ message: 'User or password is incorrect' });
     }
 
